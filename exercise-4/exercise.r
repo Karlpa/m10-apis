@@ -1,45 +1,51 @@
 # Install and load the jsonlite package
-
+install.packages("dplyr")
+install.packages("jsonlite")
+library(jsonlite)
+install.packages('curl')
 # Make a variable base.url that has the same base url from the omdb documentation.
 # (Hint: visit https://www.omdbapi.com/ to find the base url)
-
+base <- "http://www.omdbapi.com/?"
 # Make a variable called movie that has the names of your favorite movie
-
+movie <- "Oldboy"
 # Make a variable called move.no.spaces that holds movie where all the spaces
 # are replaced with the '+' character
-
+movie.no.spaces <- paste(movie)
 # Make a variable called "parameters" that holds a string with the parameters
 # to pass to the API. View the OMDb documentation to see which parameters
 # are available. Remember to separate parameters with the '&' character.
-
+parameters <- "t="
 # Make a variable called request that is a string of a request URL made up of the base URL
 # and the parameters string
-
+request <- paste0(base, parameters, movie)
 # Use fromJSON to retrieve JSON data from the omdb api using your request URL.
 # Store the result in a variable called movie.data
-
+movie.data <- fromJSON(request)
 # Make movie_data into a data frame using as.data.frame
-
+movie.data <- as.data.frame(movie.data)
 # Write a function called Director that accepts a data frame of movie info and returns
 # A vector of strings that states a movie and the director of said movie.
-
+Director <- function(movie.info) {
+  return(paste(movie.info$Title, movie.info$Director))
+}
 # Call Director with your favorite movie, and assign it to the variable movie.director
-
+Director(movie.data)
 # Bonus 
 
 # Knowing the director of on movie is okay, but it'd be great to know the directors of different
 # movies. 
 
 # Start by making a vecotr of movies and save it to the variable movie.list
-
+movie.list <- c("Titanic", "Jaws")
 # Remove spaces from each movie title
 
 # Prepare this list to be passed in as parameters for the API
-
+list.parameters <- paste0("t=",movie.list)
 # Create API URL request and assign it to the variable api.request
-
+api.request <- paste0(base, list.parameters)
 # For every entry in the vector api.request, APPLY the function fromJSON to make a list of lists
-# one entry for each request and assign this to a variable called data. 
+data <- fromJSON(c(api.request[1], api.request[2]))
+#one entry for each request and assign this to a variable called data. 
 # (Hint: ?lapply. It's similar a 'for' loop but better!)
 
 # Using the function do.call, call rbind on each entry in data (check out the do.call documentation)
